@@ -1,17 +1,16 @@
-package com.clean_achitecture.data.di
+package com.clean_achitecture.di
 
-import com.clean_achitecture.data.network.ApiInterface
+import com.clean_achitecture.data.remote.ApiInterface
+import com.clean_achitecture.data.repository.ApiRepositoryImpl
+import com.clean_achitecture.domain.repository.ApiRepository
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Named
-import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -34,4 +33,11 @@ object RetrofitModule {
         build()
             .create(ApiInterface::class.java)
 
+
+
+    @Provides
+    fun provideDataRepo(apiInterface: ApiInterface): ApiRepository {
+        return ApiRepositoryImpl(apiInterface)
+
+    }
 }
